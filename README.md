@@ -1,21 +1,21 @@
-# ŠT—v
+# æ¦‚è¦
 TBD
 
-# \¬
+# æ§‹æˆ
 
 ## DB
 TBD
 
 
-# ŠJ”­—pƒRƒ}ƒ“ƒh
+# é–‹ç™ºç”¨ã‚³ãƒžãƒ³ãƒ‰
 
-## ƒT[ƒo‹N“®(Windows)
+## ã‚µãƒ¼ãƒèµ·å‹•(Windows)
 ```Bash
 cd ~/Desktop/work/MyChronology
 go run main.go
 ```
 
-# ‰^—p
+# é‹ç”¨
 
-## ƒfƒvƒƒC
+## ãƒ‡ãƒ—ãƒ­ã‚¤
 TBD
