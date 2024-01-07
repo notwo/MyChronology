@@ -1,8 +1,43 @@
-<html>
+<!DOCTYPE html>
+<html lang="ja">
   <head>
-    <title></title>
+    <meta charset="UTF-8">
+    <meta name="description" content="自分だけの年表を作れるサイト - MyChronology">
+    <meta name="theme-color" content="#88FF88">
+    <link type="text/css" rel="preload" as="style" href="./css/components/flex.css?ver=1" onload="this.onload=null;this.rel='stylesheet'">
+    <link type="text/css" rel="preload" as="style" href="./css/index.css?ver=1" onload="this.onload=null;this.rel='stylesheet'">
+    <link type="text/css" rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" onload="this.onload=null;this.rel='stylesheet'">
+    <title>MyChronology</title>
   </head>
   <body>
+    <header class="l-header">
+      <section class="p-menuWrap c-flex--spaceBetween">
+        <section class="c-service__icon">サービスロゴ</section>
+        <nav class="p-menu">
+          <ul class="p-menu__item c-flex--spaceBetween">
+            <li>
+              <span>メニュー1</span>
+            </li>
+            <li>
+              <span>メニュー2</span>
+            </li>
+          </ul>
+        </nav>
+      </section>
+    </header>
+
+    <section class="l-main">
+      <section class="p-historyCanvas">
+      </section>
+    </section>
+
+    <hr>
+
+    <footer class="l-footer">
+      <section class="p-footer__contentsWrap"></section>
+      <section class="p-copyright">© 2024 MyChronology</section>
+    </footer>
+
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
     <script type="module" src="./js/index.js?ver=1" defer></script>
   </body>
