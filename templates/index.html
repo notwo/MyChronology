@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="description" content="自分だけの年表を作れるサイト - MyChronology">
     <meta name="theme-color" content="#88FF88">
-    <link type="text/css" rel="preload" as="style" href="./css/components/flex.css?ver=1" onload="this.onload=null;this.rel='stylesheet'">
+    <link type="text/css" rel="preload" as="style" href="./css/components/c-flex.css?ver=1" onload="this.onload=null;this.rel='stylesheet'">
+    <link type="text/css" rel="preload" as="style" href="./css/components/c-input.css?ver=1" onload="this.onload=null;this.rel='stylesheet'">
+    <link type="text/css" rel="preload" as="style" href="./css/p-canvas.css?ver=1" onload="this.onload=null;this.rel='stylesheet'">
     <link type="text/css" rel="preload" as="style" href="./css/index.css?ver=1" onload="this.onload=null;this.rel='stylesheet'">
     <link type="text/css" rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" onload="this.onload=null;this.rel='stylesheet'">
     <title>MyChronology</title>
@@ -26,10 +28,34 @@
       </section>
     </header>
 
-    <section class="l-main">
-      <section class="p-historyCanvas">
+    <main class="l-main">
+      <section class="l-container">
+        <section class="p-history">
+          <section class="p-historyCanvasWrap">
+            <section id="history-canvas" class="p-historyCanvas">
+              <!--
+                p-historyCanvas__node: 点
+                p-historyCanvas__line: 線
+              -->
+              <section class="p-historyCanvas__node"></section>
+              <section class="p-historyCanvas__line"></section>
+            </section>
+          </section>
+          <section class="p-historyContentsWrap">
+            <section id="history-contents" class="p-historyContents">
+              <section class="p-historyContents__node">
+                <section class="p-historyContents__year">
+                  <span>YYYY</span>
+                </section>
+                <section class="p-historyContents__event">
+                  <span>出生</span>
+                </section>
+              </section>
+            </section>
+          </section>
+        </section>
       </section>
-    </section>
+    </main>
 
     <hr>
 

@@ -1,3 +1,8 @@
+body {
+  z-index: 0;
+}
+
+
 .l-header {
   position: fixed;
   width: 100%;
@@ -21,14 +26,16 @@
 
 .l-main {
   flex: 1;
+  height: 30rem;
 }
 
 .l-container {
   margin: 0 auto;
+  overflow: hidden;
 }
 
 .l-footer {
-  padding: 3rem 0 0;
+  padding: 1rem 0 0;
 }
 
 .p-copyright {
