@@ -2,25 +2,54 @@ $(function() {
   class CanvasItem {
     #$canvas;
     #$contents;
+    #$latestCount;
 
     constructor(canvas, contents) {
       this.$canvas = $(`#${canvas}`);
       this.$contents = $(`#${contents}`);
+      this.$latestCount = 1;
     }
 
-    canvasNode() {
-      return $(
-        '<section></section>',
-        { class: 'p-historyCanvas__node' }
-      );
+    exec() {
+      var $this = this;
+      this.$latestCount++;
+      $this.getCanvas().append(this.canvasNode());
+
+      $this.lastCanvasNode().on('click touchend', function() {
+        if (!$('.js-tempInput__year').length) {
+          $this.getContents().append($this.inputYear());
+        }
+        $('.js-tempInput__year').focus();
+      });
+
+      $(document).on('click touchend', 'body', function(e) {
+        var $lastCanvasNode = $(e.target).closest('.js-historyCanvas__node:last-child');
+        var $input = $(e.target).closest('.js-tempInput__year');
+        if (!$lastCanvasNode.length && !$input.length) {
+          $('.js-tempInput__year').closest('.js-historyContents__node').remove();
+        }
+      });
+
+      $(document).on('change', 'input', function(e) {
+        var $target = $(e.target);
+        if ($target.val().length > 4) {
+          $target.val(Number($target.val().substring(0, 4)));
+        }
+      });
     }
 
     getCanvas() {
       return this.$canvas;
     }
-
     getContents() {
       return this.$contents;
+    }
+
+    canvasNode() {
+      return $(
+        '<section></section>',
+        { "data-id": this.$latestCount, class: 'p-historyCanvas__node js-historyCanvas__node' }
+      );
     }
 
     canvasLine() {
@@ -31,27 +60,27 @@ $(function() {
     }
 
     lastCanvasNode() {
-      return this.$canvas.find('.p-historyCanvas__node:last-child');
+      return this.$canvas.find('.js-historyCanvas__node:last-child');
     }
 
     contentsNode() {
       return $(
         '<section></section>',
-        { class: 'p-historyContents__node' }
+        { id: `contents-node-${this.$latestCount}`, class: 'p-historyContents__node js-historyContents__node' }
       );
     }
 
     contentsYear() {
       return $(
         '<section></section>',
-        { class: 'p-historyContents__year' }
+        { class: 'p-historyContents__year js-historyContents__year' }
       );
     }
 
     contentsEvent() {
       return $(
         '<section></section>',
-        { class: 'p-historyContents__event' }
+        { class: 'p-historyContents__event js-historyContents__event' }
       );
     }
 
@@ -61,14 +90,12 @@ $(function() {
         {
           type: "number",
           maxlength: 4,
-          class: 'p-tempInput__year'
+          class: 'p-tempInput__year js-tempInput__year'
         }
       );
       var $contentsNode = this.contentsNode();
       var $contentsYear = this.contentsYear();
-      var $inputButton = this.inputButton();
       $contentsYear.append($input);
-      $contentsYear.append($inputButton);
       $contentsNode.append($contentsYear);
 
       return $contentsNode;
@@ -83,46 +110,15 @@ $(function() {
           class: 'p-tempInput__event'
         }
       );
-      var $contentsNode = $('.p-historyContents__node:last-child');
+      var $contentsNode = $('.js-historyContents__node:last-child');
       var $contentsEvent = this.contentsEvent();
       $contentsEvent.append($input);
       $contentsNode.append($contentsEvent);
 
       return $contentsNode;
     }
-
-    inputButton() {
-      return $(
-        '<button type="button" class="c-btn p-register p-contentsYear__button">登録</button>'
-      );
-    }
   }
 
   var htmlCanvas = new CanvasItem('history-canvas', 'history-contents');
-
-  htmlCanvas.getCanvas().append(htmlCanvas.canvasNode());
-
-  htmlCanvas.lastCanvasNode().on('click touchend', function() {
-    if (!$('.p-tempInput__year').length) {
-      htmlCanvas.getContents().append(htmlCanvas.inputYear());
-      $('.p-tempInput__year').focus();
-    }
-  });
-
-  $(document).on('click touchend', 'body', function(e) {
-    var $target = $(e.target).closest('.p-historyCanvas__node:last-child');
-    var $button = $(e.target).closest('.p-contentsYear__button');
-    var $input = $(e.target).closest('.p-tempInput__year');
-    if (!$target.length && !$input.length && !$button.length) {
-      $('.p-tempInput__year').closest('.p-historyContents__node').remove();
-    }
-  });
-
-  $(document).on('change', 'input', function(e) {
-    var $target = $(e.target);
-    if ($target.val().length > 4) {
-      $target.val($target.val().substring(0, 4));
-    }
-  });
+  htmlCanvas.exec();
 });
-
