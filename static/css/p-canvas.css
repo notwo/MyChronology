@@ -1,0 +1,80 @@
+.p-history {
+  margin: 15rem 8rem;
+}
+
+/* history canvas */
+.p-historyCanvasWrap {
+  display: inline-block;
+}
+
+.p-historyCanvas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.p-historyCanvas__node {
+  padding: .5rem .5rem;
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  transition: all .3s ease;
+  transform-origin: center;
+  background-color: rgba(150,255,150,.9);
+  z-index: 2;
+}
+.p-historyCanvas__node:hover {
+  transform: scale(1.2, 1.2);
+  background-color: rgba(180,255,180,.9);
+}
+
+.p-historyCanvas__line {
+  margin-left: -.3rem;
+  margin-right: -.3rem;
+  height: .8rem;
+  border-radius: 8px;
+  background: rgba(200,255,120,.9);
+  animation: progress .8s normal forwards;
+  z-index: 1;
+}
+
+@keyframes progress {
+  0%{
+    width: 1rem;
+  }
+
+  100%{
+    width: 11rem;
+  }
+}
+
+/* history content */
+.p-historyContents {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.p-historyContents__year {
+  margin: 1rem 0 1rem -.2rem;
+}
+
+.p-historyContents__year span {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.p-historyContents__event {
+  margin: 1.5rem 0 2rem -.2rem;
+}
+
+.p-historyContents__event span {
+  display: block;
+  font-size: 1rem;
+}
+
+.p-tempInput__year {
+  z-index: 1;
+}
