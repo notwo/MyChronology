@@ -13,20 +13,29 @@ $(function() {
     exec() {
       var $this = this;
       this.$latestCount++;
-      $this.getCanvas().append(this.canvasNode());
+      $this.appendCanvasNode();
 
-      $this.lastCanvasNode().on('click touchend', function() {
-        if (!$('.js-tempInput__year').length) {
+      $(document).on('click touchend', '.js-historyCanvas__node:last-child', function(e) {
+        e.stopPropagation();
+        if (!$('#temp-year').length) {
           $this.getContents().append($this.inputYear());
         }
-        $('.js-tempInput__year').focus();
+        $('#temp-year').focus();
       });
 
       $(document).on('click touchend', 'body', function(e) {
         var $lastCanvasNode = $(e.target).closest('.js-historyCanvas__node:last-child');
-        var $input = $(e.target).closest('.js-tempInput__year');
+        var $input = $(e.target).closest('#temp-year');
         if (!$lastCanvasNode.length && !$input.length) {
-          $('.js-tempInput__year').closest('.js-historyContents__node').remove();
+          if ($('#temp-year').val()) {
+            $this.appendYear();
+
+            $this.appendLine();
+            $this.$latestCount++;
+            $this.appendCanvasNode();
+          } else {
+            $('#temp-year').closest('.js-historyContents__node').remove();
+          }
         }
       });
 
@@ -59,10 +68,6 @@ $(function() {
       );
     }
 
-    lastCanvasNode() {
-      return this.$canvas.find('.js-historyCanvas__node:last-child');
-    }
-
     contentsNode() {
       return $(
         '<section></section>',
@@ -84,13 +89,20 @@ $(function() {
       );
     }
 
+    spanYear(year) {
+      return $(
+        `<span>${year}</span>`
+      );
+    }
+
     inputYear() {
       var $input = $(
         '<input>',
         {
           type: "number",
           maxlength: 4,
-          class: 'p-tempInput__year js-tempInput__year'
+          id: 'temp-year',
+          class: 'p-tempInput__year'
         }
       );
       var $contentsNode = this.contentsNode();
@@ -116,6 +128,20 @@ $(function() {
       $contentsNode.append($contentsEvent);
 
       return $contentsNode;
+    }
+
+    appendLine() {
+      this.getCanvas().append(this.canvasLine());
+    }
+    appendCanvasNode() {
+      this.getCanvas().append(this.canvasNode());
+    }
+
+    appendYear() {
+      var year = Number($('#temp-year').val());
+      $('#temp-year').remove();
+      const $contentsYear = $(`#contents-node-${this.$latestCount}`).find('.js-historyContents__year');
+      $($contentsYear).append(this.spanYear(year));
     }
   }
 
