@@ -11,9 +11,7 @@ $(function() {
     }
 
     exec() {
-      var $this = this;
-
-      $this.$latestCount++;
+      this.$latestCount++;
       this.appendCanvasNode();
 
       this.setLatestTempYearEvent();
