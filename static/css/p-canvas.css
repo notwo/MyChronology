@@ -75,6 +75,6 @@
   font-size: 1rem;
 }
 
-.p-tempInput__year {
+.p-tempInput__year, .p-updateInput__year {
   z-index: 1;
 }
