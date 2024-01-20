@@ -18,6 +18,7 @@ $(function() {
       this.setTempYearEvent();
       this.setUpdateLastContentsNodeEvent();
       this.setUpdateContentsNodeEvent();
+      this.setUpdateContentsEventsEvent();
       this.setSnapTempYearEvent();
     }
 
@@ -57,10 +58,16 @@ $(function() {
       );
     }
 
+    contentsEventElements() {
+      return $(
+        '<section></section>',
+        { class: 'p-historyContents__events js-historyContents__events' }
+      );
+    }
     contentsEventElement() {
       return $(
         '<section></section>',
-        { class: 'p-historyContents__event js-historyContents__event' }
+        { class: 'p-historyContents__eventInput' }
       );
     }
 
@@ -68,6 +75,9 @@ $(function() {
       return $(
         `<span>${year}</span>`
       );
+    }
+
+    spanEvents() {
     }
 
     inputTempYearElement() {
@@ -106,21 +116,20 @@ $(function() {
     }
 
     inputEventElement() {
-      var $input = $(
-        '<input>',
+      return $(
+        '<textarea>',
         {
-          type: "text",
           maxlength: 50,
           class: 'p-tempInput__event',
           placeholder: 'この年でやったこと'
         }
       );
-      var $contentsNodeElement = $('.js-historyContents__node:last-child');
+    }
+    inputEventBlock() {
       var $contentsEventElement = this.contentsEventElement();
-      $contentsEventElement.append($input);
-      $contentsNodeElement.append($contentsEventElement);
+      $contentsEventElement.append(this.inputEventElement());
 
-      return $contentsNodeElement;
+      return $contentsEventElement;
     }
 
     appendLine() {
@@ -168,8 +177,9 @@ $(function() {
       var $this = this;
       $(document).on('click touchend', 'body', function(e) {
         var $lastCanvasNode = $(e.target).closest('.js-historyCanvas__node:last-child');
-        var $input = $(e.target).closest('#temp-year');
-        if (!$lastCanvasNode.length && !$input.length) {
+        var $tempYearInput = $(e.target).closest('#temp-year');
+
+        if (!$lastCanvasNode.length && !$tempYearInput.length) {
           if ($('#temp-year').val()) {
             $this.appendYear();
 
@@ -192,6 +202,7 @@ $(function() {
           return $(node).data('id') === canvasNodeId;
         });
         var $input = $(e.target).closest(`#temp-year-${canvasNodeId}`);
+
         if (!$canvasNode.length && !$input.length) {
           $input = $('.js-historyContents__year input');
           var $section = $input.closest('.js-historyContents__year');
@@ -201,6 +212,15 @@ $(function() {
             $input.remove();
           }
         }
+      });
+    }
+
+    setUpdateContentsEventsEvent() {
+      var $this = this;
+      $(document).on('click touchend', '.js-historyContents__eventAdd', function(e) {
+        var $contentsNode = $(e.target).closest('.js-historyContents__node');
+        var $events = $contentsNode.find('.js-historyContents__events');
+        $events.append($this.inputEventBlock());
       });
     }
 
