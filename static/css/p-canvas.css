@@ -1,10 +1,12 @@
 .p-history {
   margin: 15rem 8rem;
+/*  overflow-x: scroll; */
 }
 
 /* history canvas */
 .p-historyCanvasWrap {
   display: inline-block;
+/*  width: 200%; */
 }
 
 .p-historyCanvas {
@@ -45,7 +47,7 @@
   }
 
   100%{
-    width: 11rem;
+    width: 14rem;
   }
 }
 
@@ -62,7 +64,7 @@
 }
 
 .p-historyContents__node {
-  width: 13rem;
+  width: 16rem;
 }
 
 .p-historyContents__year {
@@ -123,4 +125,9 @@
 
 .p-tempInput__year, .p-updateInput__year {
   z-index: 1;
+}
+
+.p-tempInput__event, .p-updateInput__event {
+  width: 10rem;
+  resize: none;
 }
