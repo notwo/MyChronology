@@ -123,6 +123,15 @@
   background: rgba(0,220,165,.9);
 }
 
+.p-historyContents__eventDelete {
+  padding: .2rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  background: rgba(220,20,20,.9);
+}
+
 .p-tempInput__year, .p-updateInput__year {
   z-index: 1;
 }

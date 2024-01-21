@@ -67,9 +67,11 @@ $(function() {
     contentsEventElement() {
       return $(
         '<section></section>',
-        { class: 'p-historyContents__eventInput' }
+        { class: 'p-historyContents__event' }
       );
     }
+
+    contentsEventDelete
 
     spanYear(year) {
       return $(
@@ -125,9 +127,23 @@ $(function() {
         }
       );
     }
+    editEventElement() {
+      return $(
+        '<section></section>',
+        { class: 'p-historyContents__eventEdit js-historyContents__eventEdit' }
+      );
+    }
+    deleteEventElement() {
+      return $(
+        '<section></section>',
+        { class: 'p-historyContents__eventDelete js-historyContents__eventDelete' }
+      );
+    }
     inputEventBlock() {
       var $contentsEventElement = this.contentsEventElement();
       $contentsEventElement.append(this.inputEventElement());
+      $contentsEventElement.append(this.editEventElement());
+      $contentsEventElement.append(this.deleteEventElement());
 
       return $contentsEventElement;
     }
@@ -173,6 +189,11 @@ $(function() {
       });
     }
 
+    setUpdateEventBase() {
+      var $this = this;
+      $(document).on('click touchend', 'body', function(e) {
+      });
+    }
     setUpdateLastContentsNodeEvent() {
       var $this = this;
       $(document).on('click touchend', 'body', function(e) {
