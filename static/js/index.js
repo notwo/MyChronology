@@ -16,9 +16,8 @@ $(function() {
 
       this.setLatestTempYearEvent();
       this.setTempYearEvent();
-      this.setUpdateLastContentsNodeEvent();
-      this.setUpdateContentsNodeEvent();
-      this.setUpdateContentsEventsEvent();
+      this.setTempEventsEvent();
+      this.setUpdateEvent();
       this.setSnapTempYearEvent();
     }
 
@@ -67,7 +66,7 @@ $(function() {
     contentsEventElement() {
       return $(
         '<section></section>',
-        { class: 'p-historyContents__event' }
+        { class: 'p-historyContents__event js-historyContents__event' }
       );
     }
 
@@ -79,7 +78,10 @@ $(function() {
       );
     }
 
-    spanEvents() {
+    spanEvents(event) {
+      return $(
+        `<span>${event}</span>`
+      );
     }
 
     inputTempYearElement() {
@@ -122,7 +124,7 @@ $(function() {
         '<textarea>',
         {
           maxlength: 50,
-          class: 'p-tempInput__event',
+          class: 'p-tempInput__event js-tempInput__event',
           placeholder: 'この年でやったこと'
         }
       );
@@ -189,14 +191,20 @@ $(function() {
       });
     }
 
-    setUpdateEventBase() {
+    setTempEventsEvent() {
       var $this = this;
-      $(document).on('click touchend', 'body', function(e) {
+      $(document).on('click touchend', '.js-historyContents__eventAdd', function(e) {
+        var $contentsNode = $(e.target).closest('.js-historyContents__node');
+        var $events = $contentsNode.find('.js-historyContents__events');
+        $events.append($this.inputEventBlock());
+        $events.find('.p-tempInput__event').focus();
       });
     }
-    setUpdateLastContentsNodeEvent() {
+
+    setUpdateEvent() {
       var $this = this;
       $(document).on('click touchend', 'body', function(e) {
+        /* 最新ノード */
         var $lastCanvasNode = $(e.target).closest('.js-historyCanvas__node:last-child');
         var $tempYearInput = $(e.target).closest('#temp-year');
 
@@ -211,37 +219,38 @@ $(function() {
             $('#temp-year').closest('.js-historyContents__node').remove();
           }
         }
-      });
-    }
 
-    setUpdateContentsNodeEvent() {
-      var $this = this;
-      $(document).on('click touchend', 'body', function(e) {
+        /* 最新ノード以外 */
         var canvasNodeId = $(e.target).closest('.js-historyContents__node').data('id');
         canvasNodeId = !canvasNodeId ? $(e.target).closest('.js-historyCanvas__node').data('id') : canvasNodeId;
         var $canvasNode = $('.js-historyCanvas__node').filter(function(_i, node) {
           return $(node).data('id') === canvasNodeId;
         });
-        var $input = $(e.target).closest(`#temp-year-${canvasNodeId}`);
+        var $yearInput = $(e.target).closest(`#temp-year-${canvasNodeId}`);
 
-        if (!$canvasNode.length && !$input.length) {
-          $input = $('.js-historyContents__year input');
-          var $section = $input.closest('.js-historyContents__year');
-          if ($input.val()) {
-            $section.html($this.spanYear($input.val()));
+        if (!$canvasNode.length && !$yearInput.length) {
+          $yearInput = $('.js-historyContents__year input');
+          var $section = $yearInput.closest('.js-historyContents__year');
+          if ($yearInput.val()) {
+            $section.html($this.spanYear($yearInput.val()));
           } else {
-            $input.remove();
+            $yearInput.remove();
           }
         }
-      });
-    }
 
-    setUpdateContentsEventsEvent() {
-      var $this = this;
-      $(document).on('click touchend', '.js-historyContents__eventAdd', function(e) {
-        var $contentsNode = $(e.target).closest('.js-historyContents__node');
-        var $events = $contentsNode.find('.js-historyContents__events');
-        $events.append($this.inputEventBlock());
+        var $eventInput = $(e.target).closest('.p-tempInput__event');
+        if (!$canvasNode.length && !$eventInput.length) {
+          $('.p-tempInput__event').filter(function() {
+            return String($(this).val()).length === 0
+          }).closest('.js-historyContents__event').remove();
+
+          $('.p-tempInput__event').each(function() {
+            var $historyCanvasEvent = $(this).closest('.js-historyContents__event');
+            var eventVal = $historyCanvasEvent.find('.js-tempInput__event').val();
+            $historyCanvasEvent.find('.js-tempInput__event').remove();
+            $historyCanvasEvent.prepend($this.spanEvents(eventVal));
+          });
+        }
       });
     }
 
