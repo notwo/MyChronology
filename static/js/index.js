@@ -16,8 +16,9 @@ $(function() {
 
       this.setLatestTempYearEvent();
       this.setTempYearEvent();
-      this.setUpdateLastContentsNodeEvent();
-      this.setUpdateContentsNodeEvent();
+      this.setTempEventsEvent();
+      this.setUpdateEvent();
+      this.setDeleteContentsEvent();
       this.setSnapTempYearEvent();
     }
 
@@ -57,6 +58,12 @@ $(function() {
       );
     }
 
+    contentsEventElements() {
+      return $(
+        '<section></section>',
+        { class: 'p-historyContents__events js-historyContents__events' }
+      );
+    }
     contentsEventElement() {
       return $(
         '<section></section>',
@@ -67,6 +74,12 @@ $(function() {
     spanYear(year) {
       return $(
         `<span>${year}</span>`
+      );
+    }
+
+    spanEvents(event) {
+      return $(
+        `<span>${event}</span>`
       );
     }
 
@@ -106,21 +119,44 @@ $(function() {
     }
 
     inputEventElement() {
-      var $input = $(
-        '<input>',
+      return $(
+        '<textarea>',
         {
-          type: "text",
           maxlength: 50,
-          class: 'p-tempInput__event',
+          class: 'p-tempInput__event js-tempInput__event',
           placeholder: 'この年でやったこと'
         }
       );
-      var $contentsNodeElement = $('.js-historyContents__node:last-child');
-      var $contentsEventElement = this.contentsEventElement();
-      $contentsEventElement.append($input);
-      $contentsNodeElement.append($contentsEventElement);
+    }
 
-      return $contentsNodeElement;
+    addEventElement() {
+      return $(
+        '<section></section>',
+        { class: 'p-historyContents__eventAdd js-historyContents__eventAdd' }
+      );
+    }
+
+    editEventElement() {
+      return $(
+        '<section></section>',
+        { class: 'p-historyContents__eventEdit js-historyContents__eventEdit' }
+      );
+    }
+
+    deleteEventElement() {
+      return $(
+        '<section></section>',
+        { class: 'p-historyContents__eventDelete js-historyContents__eventDelete' }
+      );
+    }
+
+    inputEventBlock() {
+      var $contentsEventElement = this.contentsEventElement();
+      $contentsEventElement.append(this.inputEventElement());
+      $contentsEventElement.append(this.editEventElement());
+      $contentsEventElement.append(this.deleteEventElement());
+
+      return $contentsEventElement;
     }
 
     appendLine() {
@@ -135,6 +171,13 @@ $(function() {
       $('#temp-year').remove();
       const $contentsYearElement = $(`#contents-node-${this.$latestCount}`).find('.js-historyContents__year');
       $($contentsYearElement).append(this.spanYear(year));
+    }
+
+    appendEventAdder() {
+      // ここにp-historyContents__events js-historyContents__eventsを追加
+      var $contentsEventElements = this.contentsEventElements();
+      $('#temp-year').closest('.js-historyContents__node').append($contentsEventElements);
+      $('#temp-year').closest('.js-historyContents__node').append(this.addEventElement());
     }
 
     /********************** events **********************/
@@ -156,7 +199,6 @@ $(function() {
         if (canvasNodeId === lastCanvasId) { return; }
         var $currentYearSpan = $(`#contents-node-${canvasNodeId}`).find('.js-historyContents__year span');
         var currentYear = $currentYearSpan.text();
-        // ここを条件分岐させてjs-historyContents__yearの中身を書き換える
         if (!$(`#temp-year-${canvasNodeId}`).length) {
           $($(`#contents-node-${canvasNodeId}`).find('.js-historyContents__year')[0]).html($this.inputUpdateYearElement(canvasNodeId, currentYear));
         }
@@ -164,13 +206,38 @@ $(function() {
       });
     }
 
-    setUpdateLastContentsNodeEvent() {
+    setTempEventsEvent() {
+      var $this = this;
+      $(document).on('click touchend', '.js-historyContents__eventAdd', function(e) {
+        var $contentsNode = $(e.target).closest('.js-historyContents__node');
+        var $events = $contentsNode.find('.js-historyContents__events');
+        $events.append($this.inputEventBlock());
+        $events.find('.p-tempInput__event').focus();
+      });
+
+      $(document).on('click touchend', '.js-historyContents__eventEdit', function() {
+        var $tempEventInput = $(this).closest('.js-historyContents__node').find('.js-tempInput__event');
+        if ($tempEventInput.length) {
+          return;
+        }
+
+        var eventText = $(this).prev().text();
+        $(this).prev().remove();
+        $(this).parent().prepend($this.inputEventElement());
+        $(this).prev().val(eventText);
+      });
+    }
+
+    setUpdateEvent() {
       var $this = this;
       $(document).on('click touchend', 'body', function(e) {
+        /* 最新ノード */
         var $lastCanvasNode = $(e.target).closest('.js-historyCanvas__node:last-child');
-        var $input = $(e.target).closest('#temp-year');
-        if (!$lastCanvasNode.length && !$input.length) {
+        var $tempYearInput = $(e.target).closest('#temp-year');
+
+        if (!$lastCanvasNode.length && !$tempYearInput.length) {
           if ($('#temp-year').val()) {
+            $this.appendEventAdder();
             $this.appendYear();
 
             $this.appendLine();
@@ -180,27 +247,45 @@ $(function() {
             $('#temp-year').closest('.js-historyContents__node').remove();
           }
         }
-      });
-    }
 
-    setUpdateContentsNodeEvent() {
-      var $this = this;
-      $(document).on('click touchend', 'body', function(e) {
+        /* 最新ノード以外 */
         var canvasNodeId = $(e.target).closest('.js-historyContents__node').data('id');
         canvasNodeId = !canvasNodeId ? $(e.target).closest('.js-historyCanvas__node').data('id') : canvasNodeId;
         var $canvasNode = $('.js-historyCanvas__node').filter(function(_i, node) {
           return $(node).data('id') === canvasNodeId;
         });
-        var $input = $(e.target).closest(`#temp-year-${canvasNodeId}`);
-        if (!$canvasNode.length && !$input.length) {
-          $input = $('.js-historyContents__year input');
-          var $section = $input.closest('.js-historyContents__year');
-          if ($input.val()) {
-            $section.html($this.spanYear($input.val()));
+        var $yearInput = $(e.target).closest(`#temp-year-${canvasNodeId}`);
+
+        if (!$canvasNode.length && !$yearInput.length) {
+          $yearInput = $('.js-historyContents__year input');
+          var $section = $yearInput.closest('.js-historyContents__year');
+          if ($yearInput.val()) {
+            $section.html($this.spanYear($yearInput.val()));
           } else {
-            $input.remove();
+            $yearInput.remove();
           }
         }
+
+        var $eventInput = $(e.target).closest('.p-tempInput__event');
+        if (!$canvasNode.length && !$eventInput.length) {
+          $('.p-tempInput__event').filter(function() {
+            return String($(this).val()).length === 0
+          }).closest('.js-historyContents__event').remove();
+
+          $('.p-tempInput__event').each(function() {
+            var $historyCanvasEvent = $(this).closest('.js-historyContents__event');
+            var eventVal = $historyCanvasEvent.find('.js-tempInput__event').val();
+            $historyCanvasEvent.find('.js-tempInput__event').remove();
+            $historyCanvasEvent.prepend($this.spanEvents(eventVal));
+          });
+        }
+      });
+    }
+
+    setDeleteContentsEvent() {
+      $(document).on('click touchend', '.js-historyContents__eventDelete', function(e) {
+        var $contentsEvent = $(e.target).closest('.js-historyContents__event');
+        $contentsEvent.remove();
       });
     }
 
