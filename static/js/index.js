@@ -18,6 +18,7 @@ $(function() {
       this.setTempYearEvent();
       this.setTempEventsEvent();
       this.setUpdateEvent();
+      this.setDeleteContentsEvent();
       this.setSnapTempYearEvent();
     }
 
@@ -69,8 +70,6 @@ $(function() {
         { class: 'p-historyContents__event js-historyContents__event' }
       );
     }
-
-    contentsEventDelete
 
     spanYear(year) {
       return $(
@@ -129,18 +128,28 @@ $(function() {
         }
       );
     }
+
+    addEventElement() {
+      return $(
+        '<section></section>',
+        { class: 'p-historyContents__eventAdd js-historyContents__eventAdd' }
+      );
+    }
+
     editEventElement() {
       return $(
         '<section></section>',
         { class: 'p-historyContents__eventEdit js-historyContents__eventEdit' }
       );
     }
+
     deleteEventElement() {
       return $(
         '<section></section>',
         { class: 'p-historyContents__eventDelete js-historyContents__eventDelete' }
       );
     }
+
     inputEventBlock() {
       var $contentsEventElement = this.contentsEventElement();
       $contentsEventElement.append(this.inputEventElement());
@@ -164,6 +173,13 @@ $(function() {
       $($contentsYearElement).append(this.spanYear(year));
     }
 
+    appendEventAdder() {
+      // ここにp-historyContents__events js-historyContents__eventsを追加
+      var $contentsEventElements = this.contentsEventElements();
+      $('#temp-year').closest('.js-historyContents__node').append($contentsEventElements);
+      $('#temp-year').closest('.js-historyContents__node').append(this.addEventElement());
+    }
+
     /********************** events **********************/
     setLatestTempYearEvent() {
       var $this = this;
@@ -183,7 +199,6 @@ $(function() {
         if (canvasNodeId === lastCanvasId) { return; }
         var $currentYearSpan = $(`#contents-node-${canvasNodeId}`).find('.js-historyContents__year span');
         var currentYear = $currentYearSpan.text();
-        // ここを条件分岐させてjs-historyContents__yearの中身を書き換える
         if (!$(`#temp-year-${canvasNodeId}`).length) {
           $($(`#contents-node-${canvasNodeId}`).find('.js-historyContents__year')[0]).html($this.inputUpdateYearElement(canvasNodeId, currentYear));
         }
@@ -199,6 +214,18 @@ $(function() {
         $events.append($this.inputEventBlock());
         $events.find('.p-tempInput__event').focus();
       });
+
+      $(document).on('click touchend', '.js-historyContents__eventEdit', function() {
+        var $tempEventInput = $(this).closest('.js-historyContents__node').find('.js-tempInput__event');
+        if ($tempEventInput.length) {
+          return;
+        }
+
+        var eventText = $(this).prev().text();
+        $(this).prev().remove();
+        $(this).parent().prepend($this.inputEventElement());
+        $(this).prev().val(eventText);
+      });
     }
 
     setUpdateEvent() {
@@ -210,6 +237,7 @@ $(function() {
 
         if (!$lastCanvasNode.length && !$tempYearInput.length) {
           if ($('#temp-year').val()) {
+            $this.appendEventAdder();
             $this.appendYear();
 
             $this.appendLine();
@@ -251,6 +279,13 @@ $(function() {
             $historyCanvasEvent.prepend($this.spanEvents(eventVal));
           });
         }
+      });
+    }
+
+    setDeleteContentsEvent() {
+      $(document).on('click touchend', '.js-historyContents__eventDelete', function(e) {
+        var $contentsEvent = $(e.target).closest('.js-historyContents__event');
+        $contentsEvent.remove();
       });
     }
 
