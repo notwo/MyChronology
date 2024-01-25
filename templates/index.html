@@ -31,6 +31,7 @@
     <main class="l-main">
       <section class="l-container">
         <section class="p-history">
+          <!-- 描画部分 -->
           <section class="p-historyCanvasWrap">
             <section id="history-canvas" class="p-historyCanvas">
               <!--
@@ -41,8 +42,18 @@
               <section class="p-historyCanvas__line"></section>
             </section>
           </section>
+
+          <!-- コンテンツ部分 -->
           <section class="p-historyContentsWrap">
             <section id="history-contents" class="p-historyContents">
+              <!--
+                p-historyContents__year: 年
+                p-historyContents__events: p-historyContents__eventのグループ
+                p-historyContents__event: 年ごとの出来事
+                p-historyContents__eventEdit: event編集ボタン
+                p-historyContents__eventDelete: event削除ボタン
+                p-historyContents__eventAdd: event追加ボタン
+              -->
               <section id="contents-node-1" class="p-historyContents__node js-historyContents__node" data-id="1">
                 <section class="p-historyContents__year js-historyContents__year">
                   <span>YYYY</span>
