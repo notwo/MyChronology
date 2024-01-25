@@ -3,11 +3,13 @@ $(function() {
     #$canvas;
     #$contents;
     #$latestCount;
+    #$currentCanvasWidth;
 
     constructor(canvas, contents) {
       this.$canvas = $(`#${canvas}`);
       this.$contents = $(`#${contents}`);
       this.$latestCount = 1;
+      this.$currentCanvasWidth = 100;
     }
 
     exec() {
@@ -29,7 +31,9 @@ $(function() {
       return this.$contents;
     }
 
-    /********************** parts **********************/
+    /***************************************************************************************/
+    /**************************************** parts ****************************************/
+    /***************************************************************************************/
     canvasNodeElement() {
       return $(
         '<section></section>',
@@ -174,13 +178,24 @@ $(function() {
     }
 
     appendEventAdder() {
-      // ここにp-historyContents__events js-historyContents__eventsを追加
       var $contentsEventElements = this.contentsEventElements();
       $('#temp-year').closest('.js-historyContents__node').append($contentsEventElements);
       $('#temp-year').closest('.js-historyContents__node').append(this.addEventElement());
     }
 
-    /********************** events **********************/
+    extendHistoryArea() {
+      var nodeWidth = $('.p-historyCanvas__node').width() + ($('.p-historyCanvas__node').width() + $('.p-historyCanvas__line').width()) * this.$latestCount;
+      if ($('.p-history').width() <= nodeWidth && $('.p-historyCanvasWrap').width() <= nodeWidth) {
+        this.$currentCanvasWidth += 70;
+        $('.p-history').addClass('p-scroll');
+        $('.p-historyCanvasWrap').css('width', this.$currentCanvasWidth + '%');
+        $('.p-historyContentsWrap').css('width', this.$currentCanvasWidth + '%');
+      }
+    }
+
+    /****************************************************************************************/
+    /**************************************** events ****************************************/
+    /****************************************************************************************/
     setLatestTempYearEvent() {
       var $this = this;
       $(document).on('click touchend', '.js-historyCanvas__node:last-child', function(e) {
@@ -243,6 +258,8 @@ $(function() {
             $this.appendLine();
             $this.$latestCount++;
             $this.appendCanvasNode();
+
+            $this.extendHistoryArea();
           } else {
             $('#temp-year').closest('.js-historyContents__node').remove();
           }

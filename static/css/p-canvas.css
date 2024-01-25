@@ -1,12 +1,25 @@
 .p-history {
   margin: 15rem 8rem;
-/*  overflow-x: scroll; */
+}
+.p-history.p-scroll {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+.p-history.p-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+.p-history.p-scroll::-webkit-scrollbar-track {
+  border-radius: .5rem;
+  background-color: #CCC;
+}
+.p-history.p-scroll::-webkit-scrollbar-thumb {
+  border-radius: .5rem;
+  background-color: rgba(150,255,150,.9);
 }
 
 /* history canvas */
 .p-historyCanvasWrap {
   display: inline-block;
-/*  width: 200%; */
 }
 
 .p-historyCanvas {
@@ -68,7 +81,7 @@
 }
 
 .p-historyContents__year {
-  margin: 1rem 0 1rem -.2rem;
+  margin: 1rem 0 1rem .2rem;
 }
 
 .p-historyContents__year span {
@@ -78,7 +91,7 @@
 }
 
 .p-historyContents__events {
-  margin: 1.5rem 0 1rem -.2rem;
+  margin: 1.5rem 0 1rem .2rem;
 }
 
 .p-historyContents__events span {
@@ -107,7 +120,7 @@
 .p-historyContents__eventAdd:before {
   content: "+";
   display: block;
-  position: absolute;
+  position: sticky;
   transform: translate(-4%, -10%);
   font-weight: bold;
   font-size: 1.5rem;
