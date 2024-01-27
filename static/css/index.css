@@ -37,6 +37,11 @@ body {
   padding: 1rem 0 0;
 }
 
+.p-createHistoryImageButton {
+  display: flex;
+  justify-content: center;
+}
+
 .p-copyright {
   margin: .8rem 0;
   font-size: .78rem;

@@ -153,3 +153,12 @@
   width: 10rem;
   resize: none;
 }
+
+.p-createHistoryImageButton {
+  cursor: pointer;
+  background-color: pink;
+}
+
+canvas {
+  margin: 1rem 8rem;
+}

@@ -22,6 +22,7 @@ $(function() {
       this.setUpdateEvent();
       this.setDeleteContentsEvent();
       this.setSnapTempYearEvent();
+      this.setHistoryToImageButtonEvent();
     }
 
     getCanvas() {
@@ -311,6 +312,45 @@ $(function() {
         var $target = $(e.target);
         if ($target.val().length > 4) {
           $target.val(Number($target.val().substring(0, 4)));
+        }
+      });
+    }
+
+    setHistoryToImageButtonEvent() {
+      var $this = this;
+
+      $(document).on('click touchend', '#to-history-image', function() {
+        $('canvas').attr('width', $('#history').width());
+
+        var $canvas = $('canvas')[0];
+        if ($canvas.getContext) {
+          var context = $canvas.getContext("2d");
+
+          // 先に線を全部引いてから円を描画することで重なり順を調整する
+          context.lineWidth = 11;
+          var lineLength = 250;
+          var firstCenterPosX = 40;
+          var centerPosY = 40;
+          var radius = centerPosY / 2;
+
+          for (var i = 0;i < $this.$latestCount - 1;i++) {
+            context.beginPath();
+            context.strokeStyle = "rgba(200,255,120,1)";
+            context.moveTo(firstCenterPosX + i * lineLength, centerPosY);
+            context.lineTo(firstCenterPosX + (i+1) * lineLength, centerPosY);
+            context.stroke();
+          }
+
+          context.beginPath();
+          context.arc(firstCenterPosX, centerPosY, radius, 0 * Math.PI / 180, 360 * Math.PI / 180, false);
+          context.fillStyle = "rgba(150,255,150,1)";
+          context.fill();
+          for (var i = 0;i < $this.$latestCount - 1;i++) {
+            context.beginPath();
+            context.arc(firstCenterPosX + (i+1) * lineLength, centerPosY, radius, 0 * Math.PI / 180, 360 * Math.PI / 180, false);
+            context.fillStyle = "rgba(150,255,150,1)";
+            context.fill();
+          }
         }
       });
     }

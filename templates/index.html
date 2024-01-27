@@ -30,7 +30,7 @@
 
     <main class="l-main">
       <section class="l-container">
-        <section class="p-history">
+        <section id="history" class="p-history">
           <!-- 描画部分 -->
           <section class="p-historyCanvasWrap">
             <section id="history-canvas" class="p-historyCanvas">
@@ -71,6 +71,10 @@
             </section>
           </section>
         </section>
+        <section id="to-history-image" class="p-createHistoryImageButton">
+          tinpo
+        </section>
+        <canvas id="canvas"></canvas>
       </section>
     </main>
 
@@ -81,6 +85,7 @@
       <section class="p-copyright">© 2024 MyChronology</section>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
     <script type="module" src="./js/index.js?ver=1" defer></script>
   </body>
