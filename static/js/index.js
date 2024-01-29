@@ -320,7 +320,11 @@ $(function() {
       var $this = this;
 
       $(document).on('click touchend', '#to-history-image', function() {
-        $('canvas').attr('width', $('#history').width());
+        $('canvas').attr('width', $('.p-historyCanvasWrap').width() + 20);
+        $('canvas').attr('height', $('#history').height());
+        if ($('.p-history').hasClass('p-scroll')) {
+          $('.js-canvasWrap').addClass('p-scroll');
+        }
 
         var $canvas = $('canvas')[0];
         if ($canvas.getContext) {
@@ -333,12 +337,27 @@ $(function() {
           var centerPosY = 40;
           var radius = centerPosY / 2;
 
+          var textFirstPosX = 23;
+          var textFirstPosY = 100
+          var eventHeight = 40;
+          var eventFirstPosY = textFirstPosY;
+
+          var eventTextHeight = 50;
           for (var i = 0;i < $this.$latestCount - 1;i++) {
-            context.beginPath();
             context.strokeStyle = "rgba(200,255,120,1)";
             context.moveTo(firstCenterPosX + i * lineLength, centerPosY);
             context.lineTo(firstCenterPosX + (i+1) * lineLength, centerPosY);
             context.stroke();
+
+            context.font = "29px Arial"
+            var year = $('#contents-node-' + (i+1)).find('.js-historyContents__year span').text();
+            context.fillText(year, textFirstPosX + (i * lineLength), textFirstPosY);
+            var $events = $('#contents-node-' + (i+1)).find('.js-historyContents__event');
+            for (var j = 0;j < $events.length;j++) {
+              context.font = "20px Arial"
+              var eventText = $($events[j]).find('span').text();
+              context.fillText(eventText, textFirstPosX + (i * lineLength), eventFirstPosY + (j+1) * eventHeight);
+            }
           }
 
           context.beginPath();
