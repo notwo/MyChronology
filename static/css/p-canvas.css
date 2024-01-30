@@ -1,5 +1,5 @@
 .p-history {
-  margin: 15rem 8rem;
+  margin: 10rem 8rem;
 }
 .p-history.p-scroll {
   overflow-x: scroll;
@@ -95,6 +95,7 @@
 }
 
 .p-historyContents__events span {
+  margin: .5rem 0;
   display: block;
   font-size: 1rem;
 }

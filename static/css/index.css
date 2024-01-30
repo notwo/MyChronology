@@ -37,6 +37,62 @@ body {
   padding: 1rem 0 0;
 }
 
+.p-createHistoryImageButton {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  font-size: 3rem;
+  cursor: pointer;
+  background-color: #FFC0CB;
+}
+.p-createHistoryImageButton:hover {
+  background-color: #FFFF00;
+}
+
+.p-canvasWrap.p-scroll {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+.p-canvasWrap.p-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+.p-canvasWrap.p-scroll::-webkit-scrollbar-track {
+  border-radius: .5rem;
+  background-color: #CCC;
+}
+.p-canvasWrap.p-scroll::-webkit-scrollbar-thumb {
+  border-radius: .5rem;
+  background-color: rgba(150,255,150,.9);
+}
+
+.canvas {
+  margin: 2rem 8rem;
+}
+
+.p-downloadButton__buttonWrap {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.p-downloadButton {
+  padding: 1.5rem;
+  border: none;
+  border-radius: .9rem;
+  font-weight: bold;
+  font-size: 2rem;
+  color: white;
+  background-color: black;
+  cursor: pointer;
+}
+.p-downloadButton:hover {
+  background-color: #555555;
+}
+
+.c-hidden {
+  display: none;
+}
+
 .p-copyright {
   margin: .8rem 0;
   font-size: .78rem;
@@ -48,3 +104,8 @@ ol,ul {
   padding-inline-start: 0;
 }
 
+hr {
+  margin: 2rem 0;
+  border-top: .2rem solid #ccc;
+  border-bottom: .2rem solid #eee;
+}

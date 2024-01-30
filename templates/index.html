@@ -20,9 +20,6 @@
             <li>
               <span>メニュー1</span>
             </li>
-            <li>
-              <span>メニュー2</span>
-            </li>
           </ul>
         </nav>
       </section>
@@ -30,7 +27,7 @@
 
     <main class="l-main">
       <section class="l-container">
-        <section class="p-history">
+        <section id="history" class="p-history">
           <!-- 描画部分 -->
           <section class="p-historyCanvasWrap">
             <section id="history-canvas" class="p-historyCanvas">
@@ -70,6 +67,16 @@
               </section>
             </section>
           </section>
+        </section>
+
+        <section id="to-history-image" class="p-createHistoryImageButton">
+          年表を画像として生成
+        </section>
+        <section class="p-canvasWrap js-canvasWrap">
+          <canvas id="canvas" class="canvas"></canvas>
+        </section>
+        <section class="p-downloadButton__buttonWrap js-downloadButton__buttonWrap c-hidden">
+          <button type="button" id="download" class="p-downloadButton">画像をダウンロード</button>
         </section>
       </section>
     </main>
