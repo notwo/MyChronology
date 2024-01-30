@@ -43,10 +43,10 @@ body {
   padding: 2rem 0;
   font-size: 3rem;
   cursor: pointer;
-  background-color: pink;
+  background-color: #FFC0CB;
 }
 .p-createHistoryImageButton:hover {
-  background-color: rgba(255,255,0,.8);
+  background-color: #FFFF00;
 }
 
 .p-canvasWrap.p-scroll {
@@ -69,6 +69,30 @@ body {
   margin: 2rem 8rem;
 }
 
+.p-downloadButton__buttonWrap {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.p-downloadButton {
+  padding: 1.5rem;
+  border: none;
+  border-radius: .9rem;
+  font-weight: bold;
+  font-size: 2rem;
+  color: white;
+  background-color: black;
+  cursor: pointer;
+}
+.p-downloadButton:hover {
+  background-color: #555555;
+}
+
+.c-hidden {
+  display: none;
+}
+
 .p-copyright {
   margin: .8rem 0;
   font-size: .78rem;
@@ -81,6 +105,7 @@ ol,ul {
 }
 
 hr {
+  margin: 2rem 0;
   border-top: .2rem solid #ccc;
   border-bottom: .2rem solid #eee;
 }

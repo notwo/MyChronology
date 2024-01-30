@@ -22,7 +22,9 @@ $(function() {
       this.setUpdateEvent();
       this.setDeleteContentsEvent();
       this.setSnapTempYearEvent();
+
       this.setHistoryToImageButtonEvent();
+      this.setDownloadButtonEvent();
     }
 
     getCanvas() {
@@ -164,6 +166,13 @@ $(function() {
       return $contentsEventElement;
     }
 
+    downloadLinkElement(canvas) {
+      return $(
+        '<a></a>',
+        { href: canvas.toDataURL("image/png"), download: "download.png" }
+      );
+    }
+
     appendLine() {
       this.getCanvas().append(this.canvasLineElement());
     }
@@ -199,6 +208,7 @@ $(function() {
     /****************************************************************************************/
     setLatestTempYearEvent() {
       var $this = this;
+
       $(document).on('click touchend', '.js-historyCanvas__node:last-child', function(e) {
         if (!$('#temp-year').length) {
           $this.getContents().append($this.inputYearBlock());
@@ -209,6 +219,7 @@ $(function() {
 
     setTempYearEvent() {
       var $this = this;
+
       $(document).on('click touchend', '.js-historyCanvas__node', function(e) {
         var canvasNodeId = $(e.target).data('id');
         var lastCanvasId = $(e.target).closest('.js-historyCanvas__node:last-child').data('id');
@@ -224,6 +235,7 @@ $(function() {
 
     setTempEventsEvent() {
       var $this = this;
+
       $(document).on('click touchend', '.js-historyContents__eventAdd', function(e) {
         var $contentsNode = $(e.target).closest('.js-historyContents__node');
         var $events = $contentsNode.find('.js-historyContents__events');
@@ -246,6 +258,7 @@ $(function() {
 
     setUpdateEvent() {
       var $this = this;
+
       $(document).on('click touchend', 'body', function(e) {
         /* 最新ノード */
         var $lastCanvasNode = $(e.target).closest('.js-historyCanvas__node:last-child');
@@ -320,7 +333,8 @@ $(function() {
       var $this = this;
 
       $(document).on('click touchend', '#to-history-image', function() {
-        $('canvas').attr('width', $('.p-historyCanvasWrap').width() + 20);
+        $('.js-downloadButton__buttonWrap').removeClass('c-hidden');
+        $('canvas').attr('width', $('.p-historyCanvasWrap').width() + 50);
         $('canvas').attr('height', $('#history').height());
         if ($('.p-history').hasClass('p-scroll')) {
           $('.js-canvasWrap').addClass('p-scroll');
@@ -338,7 +352,7 @@ $(function() {
           var radius = centerPosY / 2;
 
           var textFirstPosX = 23;
-          var textFirstPosY = 100
+          var textFirstPosY = 100;
           var eventHeight = 40;
           var eventFirstPosY = textFirstPosY;
 
@@ -349,12 +363,12 @@ $(function() {
             context.lineTo(firstCenterPosX + (i+1) * lineLength, centerPosY);
             context.stroke();
 
-            context.font = "29px Arial"
+            context.font = "29px Arial";
             var year = $('#contents-node-' + (i+1)).find('.js-historyContents__year span').text();
             context.fillText(year, textFirstPosX + (i * lineLength), textFirstPosY);
             var $events = $('#contents-node-' + (i+1)).find('.js-historyContents__event');
             for (var j = 0;j < $events.length;j++) {
-              context.font = "20px Arial"
+              context.font = "20px Arial";
               var eventText = $($events[j]).find('span').text();
               context.fillText(eventText, textFirstPosX + (i * lineLength), eventFirstPosY + (j+1) * eventHeight);
             }
@@ -371,6 +385,15 @@ $(function() {
             context.fill();
           }
         }
+      });
+    }
+
+    setDownloadButtonEvent() {
+      var $this = this;
+
+      $(document).on('click touchend', '#download', function() {
+        var $canvas = $('#canvas');
+        $this.downloadLinkElement($canvas[0])[0].click();
       });
     }
   }
